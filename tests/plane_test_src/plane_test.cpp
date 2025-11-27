@@ -12,8 +12,8 @@ void QPlaneTest::testConstants()
 {
     QPlane plane;
 
-    QCOMPARE(plane.getConsumption(), 0.25);
-    QCOMPARE(plane.getMaxFuel(), 200.0);
+    QCOMPARE(plane.getConsumption(), 0.3);
+    QCOMPARE(plane.getMaxFuel(), 150.0);
     QCOMPARE(plane.getCurrentFuel(), 0.0);
     QCOMPARE(plane.getTotalDistance(), 0.0);
     QCOMPARE(plane.getCurrentFlightDistance(), 0.0);
@@ -23,14 +23,14 @@ void QPlaneTest::testFuelSystem()
 {
     QPlane plane;
 
-    QCOMPARE(plane.refuel(), 200.0);
-    QCOMPARE(plane.getCurrentFuel(), 200.0);
+    QCOMPARE(plane.refuel(), 150.0);
+    QCOMPARE(plane.getCurrentFuel(), 150.0);
     QVERIFY(plane.fly(100.0));
-    QCOMPARE(plane.getCurrentFuel(), 175.0);
-    QVERIFY(!plane.fly(1000.0));
-    QCOMPARE(plane.getCurrentFuel(), 175.0);
-    QCOMPARE(plane.refuel(), 25.0);
-    QCOMPARE(plane.getCurrentFuel(), 200.0);
+    QCOMPARE(plane.getCurrentFuel(), 120.0);
+    QVERIFY(!plane.fly(500.0));
+    QCOMPARE(plane.getCurrentFuel(), 120.0);
+    QCOMPARE(plane.refuel(), 30.0);
+    QCOMPARE(plane.getCurrentFuel(), 150.0);
 }
 
 void QPlaneTest::testDistanceSystem()
@@ -41,16 +41,16 @@ void QPlaneTest::testDistanceSystem()
     QVERIFY(plane.fly(50.0));
     QCOMPARE(plane.getTotalDistance(), 50.0);
     QCOMPARE(plane.getCurrentFlightDistance(), 50.0);
-    QVERIFY(plane.fly(30.0));
-    QCOMPARE(plane.getTotalDistance(), 80.0);
-    QCOMPARE(plane.getCurrentFlightDistance(), 80.0);
+    QVERIFY(plane.fly(100.0));
+    QCOMPARE(plane.getTotalDistance(), 150.0);
+    QCOMPARE(plane.getCurrentFlightDistance(), 150.0);
 
     plane.refuel();
     QCOMPARE(plane.getCurrentFlightDistance(), 0.0);
-    QCOMPARE(plane.getTotalDistance(), 80.0);
+    QCOMPARE(plane.getTotalDistance(), 150.0);
 
-    QVERIFY(!plane.fly(1000.0));
-    QCOMPARE(plane.getTotalDistance(), 80.0);
+    QVERIFY(!plane.fly(600.0));
+    QCOMPARE(plane.getTotalDistance(), 150.0);
 }
 
 void QPlaneTest::testSignals()
@@ -63,13 +63,16 @@ void QPlaneTest::testSignals()
     plane.refuel();
     QCOMPARE(fuelFullSpy.count(), 1);
 
-    plane.fly(760.0);
+    plane.fly(440.0);
+    QCOMPARE(lowFuelSpy.count(), 0);
+
+    plane.fly(10.0);
     QCOMPARE(lowFuelSpy.count(), 1);
 
     lowFuelSpy.clear();
     fuelFullSpy.clear();
 
-    plane.fly(10.0);
+    plane.fly(5.0);
     QCOMPARE(lowFuelSpy.count(), 1);
 
     plane.refuel();
