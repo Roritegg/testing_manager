@@ -1,4 +1,18 @@
-#ifndef PLANE_TEST_SRC_H
-#define PLANE_TEST_SRC_H
+#include <QObject>
 
-#endif // PLANE_TEST_SRC_H
+class QPlaneTest : public QObject
+{
+    Q_OBJECT
+
+private slots:
+    void initTestCase();
+    void init();
+
+    void testConstants();
+    void testFuelSystem();
+    void testDistanceSystem();
+    void testSignals();
+
+    void cleanupTestCase();
+    void cleanup();
+};
