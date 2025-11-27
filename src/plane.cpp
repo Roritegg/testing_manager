@@ -36,7 +36,7 @@ void QPlane::checkFuelLevel()
 {
     double fuelPercentage = (m_currentFuel / m_maxFuel) * 100.0;
 
-    if (fuelPercentage < 10.0) {
+    if (fuelPercentage <= 10.0) {
         emit lowFuelWarning();
     }
     if (fuelPercentage >= 100.0) {
